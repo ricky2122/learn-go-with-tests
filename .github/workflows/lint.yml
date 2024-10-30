@@ -1,0 +1,35 @@
+name: Lint
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: /hello-world
+
+env:
+  GO_VERSION: 1.23.x
+  GOLANGCI_LINT_VERSION: v1.61
+
+jobs:
+  lint:
+    name: Lint
+    # GITHUB_TOKEN への権限設定
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: reviewdog/action-golangci-lint@v2
+        with:
+          github_token: ${{ secrets.github_token }}
+          go_version: ${{ env.GO_VERSION }}
+          # reviewdog の動作モードの指定
+          reporter: github-pr-review # PRにコメント
+          # Github Status へのレポートレベルの指定
+          level: warning
+          filter_mode: nofilter # 変更箇所以外でエラーが出てもアノテーションをつけてくれる
+          fail_on_error: true # lintでエラーが出たら失敗にする
+          golangci_lint_flags: "--config=.golangci.yml"
