@@ -15,6 +15,10 @@ func (r Rectangle) Area() float64 {
 	return r.Width * r.Height
 }
 
+func (r Rectangle) Perimeter() float64 {
+	return 2 * (r.Width + r.Height)
+}
+
 type Circle struct {
 	Radius float64
 }
@@ -30,12 +34,4 @@ type Triangle struct {
 
 func (t Triangle) Area() float64 {
 	return (t.Base * t.Height) * 0.5
-}
-
-func Perimeter(rectangle Rectangle) float64 {
-	return 2 * (rectangle.Width + rectangle.Height)
-}
-
-func Area(rectangle Rectangle) float64 {
-	return rectangle.Width * rectangle.Height
 }
