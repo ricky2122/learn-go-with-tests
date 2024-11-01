@@ -29,7 +29,7 @@ func Countdown(out io.Writer, sleeper Sleeper) {
 	}
 
 	sleeper.Sleep()
-	fmt.Fprint(out, "Go!")
+	fmt.Fprint(out, finalWord)
 }
 
 func main() {
