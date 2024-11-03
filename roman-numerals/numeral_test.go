@@ -45,12 +45,24 @@ var cases = []struct {
 func TestRomanNumerals(t *testing.T) {
 	for _, test := range cases {
 		t.Run(fmt.Sprintf("%d gets converted to %q", test.Arabic, test.Roman), func(t *testing.T) {
-			got := ConvertToRoman(test.Arabic)
+			got, err := ConvertToRoman(test.Arabic)
+			if err != nil {
+				t.Errorf("unexpected error: %v", err)
+			}
 			if got != test.Roman {
 				t.Errorf("got %q, want %q", got, test.Roman)
 			}
 		})
 	}
+}
+
+func TestRomanNumeralsInvalidValue(t *testing.T) {
+	t.Run("more than 4000", func(t *testing.T) {
+		_, err := ConvertToRoman(4000)
+		if err == nil {
+			t.Error("expect error but got is nil")
+		}
+	})
 }
 
 func TestConvertingToArabic(t *testing.T) {
@@ -66,11 +78,14 @@ func TestConvertingToArabic(t *testing.T) {
 
 func TestPropertiesOfConversion(t *testing.T) {
 	assertion := func(arabic uint16) bool {
-		if arabic > 3999 {
+		roman, err := ConvertToRoman(arabic)
+		if err != nil && arabic <= 3999 {
+			log.Printf("arabic <= 3999, but error occurred: %v", err)
+			return false
+		} else if err != nil && arabic > 3999 {
 			log.Println(arabic)
 			return true
 		}
-		roman := ConvertToRoman(arabic)
 		fromRoman := ConvertToArabic(roman)
 		return fromRoman == arabic
 	}

@@ -1,15 +1,31 @@
 package main
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
+
+type RomanNumeralValue uint16
+
+func NewRomanNumeralValue(num uint16) (RomanNumeralValue, error) {
+	if num > 3999 {
+		return 0, fmt.Errorf("Roman numerals must be less than 4000, but given: %d", num)
+	}
+	return RomanNumeralValue(num), nil
+}
+
+func (rmv RomanNumeralValue) ToUint16() uint16 {
+	return uint16(rmv)
+}
 
 type RomanNumeral struct {
-	Value  uint16
+	Value  RomanNumeralValue
 	Symbol string
 }
 
 type RomanNumerals []RomanNumeral
 
-func (r RomanNumerals) ValueOf(symbols ...byte) uint16 {
+func (r RomanNumerals) ValueOf(symbols ...byte) RomanNumeralValue {
 	symbol := string(symbols)
 	for _, s := range r {
 		if s.Symbol == symbol {
@@ -66,7 +82,12 @@ func isSubtractive(symbol uint8) bool {
 	return symbol == 'I' || symbol == 'X' || symbol == 'C'
 }
 
-func ConvertToRoman(arabic uint16) string {
+func ConvertToRoman(num uint16) (string, error) {
+	arabic, err := NewRomanNumeralValue(num)
+	if err != nil {
+		return "", err
+	}
+
 	var result strings.Builder
 
 	for _, numeral := range allRomanNumerals {
@@ -76,12 +97,12 @@ func ConvertToRoman(arabic uint16) string {
 		}
 	}
 
-	return result.String()
+	return result.String(), nil
 }
 
 func ConvertToArabic(roman string) (total uint16) {
 	for _, symbols := range windowedRoman(roman).Symbols() {
-		total += allRomanNumerals.ValueOf(symbols...)
+		total += allRomanNumerals.ValueOf(symbols...).ToUint16()
 	}
 	return
 }
