@@ -6,6 +6,8 @@ func ConvertToRoman(arabic int) string {
 		return "I"
 	case 2:
 		return "II"
+	case 3:
+		return "III"
 	}
 	return ""
 }
