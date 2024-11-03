@@ -1,34 +1,50 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestRomanNumerals(t *testing.T) {
 	cases := []struct {
-		Description string
-		Arabic      int
-		Want        string
+		Arabic int
+		Roman  string
 	}{
-		{Description: "1 gets converted to I", Arabic: 1, Want: "I"},
-		{Description: "2 gets converted to II", Arabic: 2, Want: "II"},
-		{Description: "3 gets converted to III", Arabic: 3, Want: "III"},
-		{Description: "4 gets converted to IV", Arabic: 4, Want: "IV"},
-		{Description: "5 gets converted to V", Arabic: 5, Want: "V"},
-		{Description: "6 gets converted to VI", Arabic: 6, Want: "VI"},
-		{Description: "7 gets converted to VII", Arabic: 7, Want: "VII"},
-		{Description: "8 gets converted to VIII", Arabic: 8, Want: "VIII"},
-		{Description: "9 gets converted to IX", Arabic: 9, Want: "IX"},
-		{Description: "10 gets converted to X", Arabic: 10, Want: "X"},
-		{Description: "14 gets converted to XIV", Arabic: 14, Want: "XIV"},
-		{Description: "18 gets converted to XVIII", Arabic: 18, Want: "XVIII"},
-		{Description: "20 gets converted to XX", Arabic: 20, Want: "XX"},
-		{Description: "39 gets converted to XXXIX", Arabic: 39, Want: "XXXIX"},
+		{Arabic: 1, Roman: "I"},
+		{Arabic: 2, Roman: "II"},
+		{Arabic: 3, Roman: "III"},
+		{Arabic: 4, Roman: "IV"},
+		{Arabic: 5, Roman: "V"},
+		{Arabic: 6, Roman: "VI"},
+		{Arabic: 7, Roman: "VII"},
+		{Arabic: 8, Roman: "VIII"},
+		{Arabic: 9, Roman: "IX"},
+		{Arabic: 10, Roman: "X"},
+		{Arabic: 14, Roman: "XIV"},
+		{Arabic: 18, Roman: "XVIII"},
+		{Arabic: 20, Roman: "XX"},
+		{Arabic: 39, Roman: "XXXIX"},
+		{Arabic: 40, Roman: "XL"},
+		{Arabic: 47, Roman: "XLVII"},
+		{Arabic: 49, Roman: "XLIX"},
+		{Arabic: 50, Roman: "L"},
+		{Arabic: 100, Roman: "C"},
+		{Arabic: 90, Roman: "XC"},
+		{Arabic: 400, Roman: "CD"},
+		{Arabic: 500, Roman: "D"},
+		{Arabic: 900, Roman: "CM"},
+		{Arabic: 1000, Roman: "M"},
+		{Arabic: 1984, Roman: "MCMLXXXIV"},
+		{Arabic: 3999, Roman: "MMMCMXCIX"},
+		{Arabic: 2014, Roman: "MMXIV"},
+		{Arabic: 1006, Roman: "MVI"},
+		{Arabic: 798, Roman: "DCCXCVIII"},
 	}
-
 	for _, test := range cases {
-		t.Run(test.Description, func(t *testing.T) {
+		t.Run(fmt.Sprintf("%d gets converted to %q", test.Arabic, test.Roman), func(t *testing.T) {
 			got := ConvertToRoman(test.Arabic)
-			if got != test.Want {
-				t.Errorf("got %q, want %q", got, test.Want)
+			if got != test.Roman {
+				t.Errorf("got %q, want %q", got, test.Roman)
 			}
 		})
 	}
