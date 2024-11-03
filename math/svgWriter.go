@@ -6,26 +6,36 @@ import (
 	"time"
 )
 
-// const (
-// 	secondHandLength = 90
-// 	clockCentreX     = 150
-// 	clockCentreY     = 150
-// )
+const (
+	secondHandLength = 90
+	minuteHandLength = 80
+	clockCentreX     = 150
+	clockCentreY     = 150
+)
 
 // SVGWriter writes an SVG representation of an analogue clock, showing the time t, to the writer w
 func SVGWriter(w io.Writer, t time.Time) {
 	_, _ = io.WriteString(w, svgStart)
 	_, _ = io.WriteString(w, bezel)
 	secondHand(w, t)
+	minuteHand(w, t)
 	_, _ = io.WriteString(w, svgEnd)
 }
 
 func secondHand(w io.Writer, t time.Time) {
-	p := secondHandPoint(t)
-	p = Point{p.X * secondHandLength, p.Y * secondHandLength} // scale
-	p = Point{p.X, -p.Y}                                      // flip
-	p = Point{p.X + clockCentreX, p.Y + clockCentreY}         // translate
+	p := makeHand(secondHandPoint(t), secondHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
+}
+
+func minuteHand(w io.Writer, t time.Time) {
+	p := makeHand(minuteHandPoint(t), minuteHandLength)
+	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
+}
+
+func makeHand(p Point, length float64) Point {
+	p = Point{p.X * length, p.Y * length}                // scale
+	p = Point{p.X, -p.Y}                                 // flip
+	return Point{p.X + clockCentreX, p.Y + clockCentreY} // translate
 }
 
 const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
