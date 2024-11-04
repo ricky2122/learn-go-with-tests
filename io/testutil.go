@@ -62,7 +62,7 @@ func assertLeague(t testing.TB, got, want []Player) {
 	}
 }
 
-func assertScoreEqual(t testing.TB, got, want int) {
+func assertScoreEquals(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("got %d want %d", got, want)
