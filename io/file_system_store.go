@@ -1,9 +1,11 @@
 package main
 
 import (
+	"cmp"
 	"encoding/json"
 	"fmt"
 	"os"
+	"slices"
 )
 
 type FileSystemPlayerStore struct {
@@ -51,6 +53,10 @@ func initializePlayerDBFile(file *os.File) error {
 }
 
 func (f *FileSystemPlayerStore) GetLeague() League {
+	slices.SortStableFunc(f.league, func(a, b Player) int {
+		return cmp.Compare(b.Wins, a.Wins)
+	})
+
 	return f.league
 }
 
