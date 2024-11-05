@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -67,4 +68,22 @@ func assertScoreEquals(t testing.TB, got, want int) {
 	if got != want {
 		t.Errorf("got %d want %d", got, want)
 	}
+}
+
+func createTempFile(t testing.TB, initialData string) (*os.File, func()) {
+	t.Helper()
+
+	tmpfile, err := os.CreateTemp("", "db")
+	if err != nil {
+		t.Fatalf("could not create temp file %v", err)
+	}
+
+	_, _ = tmpfile.Write([]byte(initialData))
+
+	removeFile := func() {
+		tmpfile.Close()
+		os.Remove(tmpfile.Name())
+	}
+
+	return tmpfile, removeFile
 }
