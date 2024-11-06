@@ -36,7 +36,7 @@ const (
 
 // PlayPoker starts the game.
 func (cli *CLI) PlayPoker() {
-	fmt.Fprintf(cli.out, PlayerPrompt)
+	fmt.Fprint(cli.out, PlayerPrompt)
 
 	numberOfPlayerInput := cli.readLine()
 	numberOfPlayers, err := strconv.Atoi(strings.Trim(numberOfPlayerInput, "\n"))
