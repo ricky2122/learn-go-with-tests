@@ -9,10 +9,7 @@ import (
 	poker "learn-go-with-tests/time"
 )
 
-var (
-	dummyStdIn  = &bytes.Buffer{}
-	dummyStdOut = &bytes.Buffer{}
-)
+var dummyStdOut = &bytes.Buffer{}
 
 type GameSpy struct {
 	StartCalled      bool

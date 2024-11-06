@@ -5,3 +5,4 @@ linters:
     - gofmt
     - gosimple # Linter for Go source code that specializes in simplifying a code
     - govet
+    - unused
